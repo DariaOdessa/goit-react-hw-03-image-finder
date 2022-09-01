@@ -6,6 +6,11 @@ import { Overlay, ModalWindow } from './Modal.styled';
 const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    src: PropTypes.string.isRequired,
+  };
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -27,15 +32,14 @@ export class Modal extends Component {
   };
 
   render() {
+    const { onClose, src } = this.props;
     return createPortal(
       <Overlay onClick={this.handleBackDropClick}>
-        <ModalWindow>{this.props.children}</ModalWindow>
+        <ModalWindow onClose={onClose}>
+          <img src={src} alt=""></img>
+        </ModalWindow>
       </Overlay>,
       modalRoot
     );
   }
 }
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};

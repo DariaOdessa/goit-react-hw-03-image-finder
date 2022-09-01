@@ -22,6 +22,16 @@ export const getImages = async (query, page) => {
          const totalData = response.data.totalHits;
          const data = response.data.hits;
 
+         const images = {
+                hits: response.data.hits.map(({ id, largeImageURL, webformatURL, tags }) => ({
+                id,
+                largeImageURL,
+                webformatURL,
+                tags,
+                })),
+                totalHits: response.data.totalHits,
+            }
+
         if (totalData === 0) {
             Notify.failure('Looks like there is no images for your search :( Try to write something else!', {
                 width: '400px',
@@ -36,11 +46,12 @@ export const getImages = async (query, page) => {
                 position: 'center-bottom',
                 distance: '50px'
             });
-            return response.data;
+
+            return images;
         }
         
         else {
-            return response.data;
+            return images;
         }
         
     } catch (error) {
